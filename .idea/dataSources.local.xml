@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="dataSourceStorageLocal" created-in="PS-233.14808.18">
+    <data-source name="symfony@exampleproject-db-1" uuid="b2abcf0c-a14d-4bc9-9dbf-4484f1bdc69a">
+      <database-info product="MariaDB" version="10.4.33-MariaDB-1:10.4.33+maria~ubu2004" jdbc-version="4.2" driver-name="MariaDB Connector/J" driver-version="3.0.7" dbms="MARIADB" exact-version="10.4.33" exact-driver-version="3.0">
+        <extra-name-characters>#@</extra-name-characters>
+        <identifier-quote-string>`</identifier-quote-string>
+      </database-info>
+      <case-sensitivity plain-identifiers="exact" quoted-identifiers="exact" />
+      <secret-storage>master_key</secret-storage>
+      <user-name>symfony</user-name>
+      <schema-mapping>
+        <introspection-scope>
+          <node kind="schema" qname="@" />
+        </introspection-scope>
+      </schema-mapping>
+      <ssh-properties>
+        <enabled>true</enabled>
+        <ssh-config-id>ad1c24a7-74ee-40f9-bc40-d0e97f1f41f6</ssh-config-id>
+      </ssh-properties>
+    </data-source>
+  </component>
+</project>
