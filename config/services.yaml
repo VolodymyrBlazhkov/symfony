@@ -11,6 +11,7 @@ parameters:
         App\Exception\RequestBodySerializeException: { code: 400, hidden: false}
         App\Exception\UserExistException: { code: 409, hidden: false}
         App\Exception\UserNotExistException: { code: 409, hidden: false}
+        App\Exception\BookExistWithSlugException: { code: 409, hidden: false}
 
 services:
     # default configuration for services in *this* file

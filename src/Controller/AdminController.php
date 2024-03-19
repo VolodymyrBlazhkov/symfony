@@ -17,6 +17,7 @@ class AdminController extends AbstractController
     }
 
     /**
+     * @QA\Tag(name="Admin Api")
      * @QA\Response(
      *     response="200",
      *     description="Add role Author",

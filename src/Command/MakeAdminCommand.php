@@ -23,7 +23,7 @@ class MakeAdminCommand extends Command
         $this->addArgument('user-id', InputArgument::REQUIRED, 'User id');
     }
 
-    p function execute(InputInterface $input, OutputInterface $output): int
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $userId = (int) $input->getArgument('user-id');
         $this->roleService->grantAdmin($userId);

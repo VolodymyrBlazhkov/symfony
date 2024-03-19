@@ -6,6 +6,7 @@ use App\Repository\BookRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: BookRepository::class)]
 class Book
@@ -16,28 +17,32 @@ class Book
     private ?int $id = null;
 
     #[ORM\Column(type:"string",length: 255)]
-    private ?string $title = null;
+    private string $title;
 
     #[ORM\Column(type:"string",length: 255)]
-    private ?string $slug = null;
+    private string $slug;
 
-    #[ORM\Column(type:"string",length: 255)]
+    #[ORM\Column(type:"string",length: 255, nullable: true)]
     private ?string $image = null;
 
-    #[ORM\Column(type:"simple_array")]
-    private array $authors = [];
+    #[ORM\Column(type:"simple_array", nullable: true)]
+    private ?array $authors = [];
 
-    #[ORM\Column(type:"string",length: 13)]
-    private string $isbn;
+    #[ORM\Column(type:"string",length: 13, nullable: true)]
+    private ?string $isbn = null;
 
-    #[ORM\Column(type:"text")]
-    private string $description;
+    #[ORM\Column(type:"text", nullable: true)]
+    private ?string $description = null;
 
-    #[ORM\Column(type:"date_immutable")]
-    private \DateTimeInterface $publicationDate;
+    #[ORM\Column(type:"date_immutable", nullable: true)]
+    private ?\DateTimeInterface $publicationDate;
 
     #[ORM\Column(type:"boolean", options: ['default' => false])]
     private bool $meap;
+
+    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    private UserInterface $user;
 
     /**
      * @var Collection<Book>
@@ -81,12 +86,12 @@ class Book
         return $this;
     }
 
-    public function getSlug(): ?string
+    public function getSlug(): string
     {
         return $this->slug;
     }
 
-    public function setSlug(?string $slug): self
+    public function setSlug(string $slug): self
     {
         $this->slug = $slug;
 
@@ -105,24 +110,24 @@ class Book
         return $this;
     }
 
-    public function getAuthors(): array
+    public function getAuthors(): ?array
     {
         return $this->authors;
     }
 
-    public function setAuthors(array $authors): self
+    public function setAuthors(?array $authors): self
     {
         $this->authors = $authors;
 
         return $this;
     }
 
-    public function getPublicationDate(): \DateTimeInterface
+    public function getPublicationDate(): ?\DateTimeInterface
     {
         return $this->publicationDate;
     }
 
-    public function setPublicationDate(\DateTimeInterface $publicationDate): self
+    public function setPublicationDate(?\DateTimeInterface $publicationDate): self
     {
         $this->publicationDate = $publicationDate;
 
@@ -156,24 +161,24 @@ class Book
         return $this;
     }
 
-    public function getIsbn(): string
+    public function getIsbn(): ?string
     {
         return $this->isbn;
     }
 
-    public function setIsbn(string $isbn): self
+    public function setIsbn(?string $isbn): self
     {
         $this->isbn = $isbn;
 
         return $this;
     }
 
-    public function getDescription(): string
+    public function getDescription(): ?string
     {
         return $this->description;
     }
 
-    public function setDescription(string $description): self
+    public function setDescription(?string $description): self
     {
         $this->description = $description;
 
@@ -210,4 +215,14 @@ class Book
         return $this;
     }
 
+    public function getUser(): UserInterface
+    {
+        return $this->user;
+    }
+
+    public function setUser(UserInterface $user): self
+    {
+        $this->user = $user;
+        return $this;
+    }
 }
