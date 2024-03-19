@@ -10,7 +10,6 @@ use App\Modal\Author\CreateBookRequest;
 use App\Modal\IdResponse;
 use App\Repository\BookRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use RectorPrefix202403\SebastianBergmann\Diff\TimeEfficientLongestCommonSubsequenceCalculator;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\String\Slugger\SluggerInterface;
 

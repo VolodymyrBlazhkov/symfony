@@ -29,6 +29,7 @@ class AdminController extends AbstractController
      * )
      */
     #[Route(path:'/api/v1/admin/grantAuthor/{userId}', methods: ['POST'])]
+    #[Security(name: 'Bearer')]
     public function grantAuthor(int $userId): Response
     {
         $this->roleService->grantAuthor($userId);
