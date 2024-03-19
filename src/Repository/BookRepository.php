@@ -7,7 +7,6 @@ use App\Exception\BookNotFoundException;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\String\AbstractUnicodeString;
 
 /**
  * @extends ServiceEntityRepository<Book>

@@ -7,6 +7,7 @@ use App\Exception\BookExistWithSlugException;
 use App\Modal\Author\BookListItem;
 use App\Modal\Author\BookListResponse;
 use App\Modal\Author\CreateBookRequest;
+use App\Modal\IdResponse;
 use App\Repository\BookRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use RectorPrefix202403\SebastianBergmann\Diff\TimeEfficientLongestCommonSubsequenceCalculator;
@@ -36,7 +37,7 @@ class AuthorService
         );
     }
 
-    public function createBook(CreateBookRequest $request)
+    public function createBook(CreateBookRequest $request): IdResponse
     {
         $slug = $this->slugger->slug($request->getTitle());
 
@@ -52,6 +53,8 @@ class AuthorService
 
         $this->em->persist($book);
         $this->em->flush();
+
+        return new IdResponse($book->getId());
     }
     public function deleteBook(int $id): void
     {

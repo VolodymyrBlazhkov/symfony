@@ -29,6 +29,7 @@ class AuthorController extends AbstractController
      * )
      */
     #[Route(path:'/api/v1/author/books', methods: ['GET'])]
+    #[Security(name: 'Bearer')]
     public function books(): Response
     {
         return $this->json($this->authorService->getBooks());
@@ -47,6 +48,7 @@ class AuthorController extends AbstractController
      *
      */
     #[Route(path:'/api/v1/author/book/{id}', methods: ['DELETE'])]
+    #[Security(name: 'Bearer')]
     public function deleteBooks(int $id): Response
     {
         $this->authorService->deleteBook($id);
@@ -67,9 +69,9 @@ class AuthorController extends AbstractController
      * @QA\RequestBody(@Model(type=CreateBookRequest::class))
      */
     #[Route(path:'/api/v1/author/book', methods: ['POST'])]
+    #[Security(name: 'Bearer')]
     public function createBook(#[RequestBody] CreateBookRequest $request): Response
     {
-        $this->authorService->createBook($request);
-        return $this->json(null);
+        return $this->json($this->authorService->createBook($request));
     }
 }
