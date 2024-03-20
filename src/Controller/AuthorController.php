@@ -8,11 +8,14 @@ use App\Attribute\RequestFile;
 use App\Modal\Author\CreateBookRequest;
 use App\Modal\Author\PublishBookRequest;
 use App\Service\AuthorService;
+use App\Service\BookPublishService;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Annotations as OA;
 use OpenApi\Annotations as QA;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Validator\Constraints\Image;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,11 +24,14 @@ use App\Modal\Author\BookListResponse;
 use App\Modal\ErrorResponse;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use App\Modal\Author\UploadImageResponse;
+use App\Security\Vouter\AuthorBookVouter;
 
 class AuthorController extends AbstractController
 {
-    public function __construct(private AuthorService $authorService)
-    {
+    public function __construct(
+        private AuthorService $authorService,
+        private BookPublishService $bookPublish
+    ) {
     }
 
     /**
@@ -38,9 +44,9 @@ class AuthorController extends AbstractController
      */
     #[Route(path:'/api/v1/author/books', methods: ['GET'])]
     #[Security(name: 'Bearer')]
-    public function books(): Response
+    public function books(#[CurrentUser] UserInterface $user): Response
     {
-        return $this->json($this->authorService->getBooks());
+        return $this->json($this->authorService->getBooks($user));
     }
 
     /**
@@ -58,6 +64,7 @@ class AuthorController extends AbstractController
      */
     #[Route(path:'/api/v1/author/book/{id}', methods: ['DELETE'])]
     #[Security(name: 'Bearer')]
+    #[IsGranted(AuthorBookVouter::BOOK_PUBLISH, subject: 'id')]
     public function deleteBooks(int $id): Response
     {
         $this->authorService->deleteBook($id);
@@ -79,9 +86,9 @@ class AuthorController extends AbstractController
      */
     #[Route(path:'/api/v1/author/book', methods: ['POST'])]
     #[Security(name: 'Bearer')]
-    public function createBook(#[RequestBody] CreateBookRequest $request): Response
+    public function createBook(#[RequestBody] CreateBookRequest $request, #[CurrentUser] UserInterface $user): Response
     {
-        return $this->json($this->authorService->createBook($request));
+        return $this->json($this->authorService->createBook($request, $user));
     }
 
     /**
@@ -99,9 +106,10 @@ class AuthorController extends AbstractController
      */
     #[Route(path:'/api/v1/author/book/{id}/publish', methods: ['POST'])]
     #[Security(name: 'Bearer')]
+    #[IsGranted(AuthorBookVouter::BOOK_PUBLISH, subject: 'id')]
     public function publishBook(int $id, #[RequestBody] PublishBookRequest $request): Response
     {
-        $this->authorService->publish($id, $request);
+        $this->bookPublish->publish($id, $request);
         return $this->json(null);
     }
 
@@ -114,9 +122,10 @@ class AuthorController extends AbstractController
      */
     #[Route(path:'/api/v1/author/book/{id}/unpublish', methods: ['POST'])]
     #[Security(name: 'Bearer')]
+    #[IsGranted(AuthorBookVouter::BOOK_PUBLISH, subject: 'id')]
     public function unPublishBook(int $id): Response
     {
-        $this->authorService->unPublish($id);
+        $this->bookPublish->unPublish($id);
         return $this->json(null);
     }
 
@@ -149,6 +158,7 @@ class AuthorController extends AbstractController
      */
     #[Route(path:'/api/v1/author/book/{id}/uploadImage', methods: ['POST'])]
     #[Security(name: 'Bearer')]
+    #[IsGranted(AuthorBookVouter::BOOK_PUBLISH, subject: 'id')]
     public function uploadImage(
         int $id,
         #[RequestFile(field: 'cover', constraints: [

@@ -3,6 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\Category;
+use App\Exception\BookCategoryNotFoundException;
+use App\Exception\BookNotFoundException;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Persistence\ManagerRegistry;
@@ -38,4 +40,28 @@ class CategoryRepository extends ServiceEntityRepository
     {
         return null !== $this->find($id);
     }
+
+    public function getById(int $id): Category
+    {
+        $category = $this->find($id);
+
+        if ($category === null) {
+            throw new BookCategoryNotFoundException();
+        }
+
+        return $category;
+    }
+
+    public function countBooksInCategory(int $id): int
+    {
+        return $this->_em->createQuery('SELECT COUNT(b.id) FROM App\Entity\Book b WHERE :catId MEMBER OF b.categories')
+            ->setParameter('catId', $id)
+            ->getSingleScalarResult();
+    }
+
+    public function existBySlug(string $slug): bool
+    {
+        return null !== $this->findOneBy(['slug'=>$slug]);
+    }
+
 }
