@@ -7,6 +7,7 @@ use App\Attribute\RequestBody;
 use App\Attribute\RequestFile;
 use App\Modal\Author\CreateBookRequest;
 use App\Modal\Author\PublishBookRequest;
+use App\Modal\Author\UpdateBookRequest;
 use App\Service\AuthorService;
 use App\Service\BookPublishService;
 use Nelmio\ApiDocBundle\Annotation\Model;
@@ -25,6 +26,7 @@ use App\Modal\ErrorResponse;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use App\Modal\Author\UploadImageResponse;
 use App\Security\Vouter\AuthorBookVouter;
+use App\Modal\Author\BookDetails;
 
 class AuthorController extends AbstractController
 {
@@ -167,5 +169,49 @@ class AuthorController extends AbstractController
         ])] UploadedFile $file): Response
     {
         return $this->json($this->authorService->uploadImage($id, $file));
+    }
+
+
+    /**
+     * @QA\Tag(name="Author Api")
+     * @QA\Response(
+     *     response="200",
+     *     description="Update book"
+     * )
+     * @QA\Response(
+     *      response="404",
+     *      description="books not found",
+     *      @Model(type=ErrorResponse::class)
+     *  )
+     * @QA\RequestBody(@Model(type=UpdateBookRequest::class))
+     */
+    #[Route(path:'/api/v1/author/updateBook/{id}', methods: ['POST'])]
+    #[Security(name: 'Bearer')]
+    #[IsGranted(AuthorBookVouter::BOOK_PUBLISH, subject: 'id')]
+    public function updateBook(int $id, #[RequestBody] UpdateBookRequest $request): Response
+    {
+        $this->authorService->updateBook($id, $request);
+        return $this->json(null);
+    }
+
+    /**
+     * @QA\Tag(name="Author Api")
+     * @QA\Response(
+     *     response="200",
+     *     description="Get book",
+     *     @Model(type=BookDetails::class)
+     * )
+     * @QA\Response(
+     *      response="404",
+     *      description="books not found",
+     *      @Model(type=ErrorResponse::class)
+     *  )
+     */
+    #[Route(path:'/api/v1/author/book/{id}', methods: ['GET'])]
+    #[Security(name: 'Bearer')]
+    #[IsGranted(AuthorBookVouter::BOOK_PUBLISH, subject: 'id')]
+    public function book(int $id): Response
+    {
+        return $this->json( $this->authorService->getBook($id));
     }
 }

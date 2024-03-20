@@ -64,6 +64,11 @@ class CategoryRepository extends ServiceEntityRepository
         return null !== $this->findOneBy(['slug'=>$slug]);
     }
 
+    public function findByBookCategoriesIds(array $ids): array
+    {
+        return $this->findBy(['id' => $ids]);
+    }
+
     public function save(Category $category): void
     {
         $this->_em->persist($category);
