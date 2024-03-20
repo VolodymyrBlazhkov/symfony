@@ -64,4 +64,30 @@ class CategoryRepository extends ServiceEntityRepository
         return null !== $this->findOneBy(['slug'=>$slug]);
     }
 
+    public function save(Category $category): void
+    {
+        $this->_em->persist($category);
+    }
+
+    public function remove(Category $category): void
+    {
+        $this->_em->remove($category);
+    }
+
+    public function commit(): void
+    {
+        $this->_em->flush();
+    }
+
+    public function removeAndCommit(Category $category): void
+    {
+        $this->remove($category);
+        $this->commit();
+    }
+
+    public function saveAndCommit(Category $category): void
+    {
+        $this->save($category);
+        $this->commit();
+    }
 }

@@ -29,4 +29,20 @@ class SubscriberRepository extends ServiceEntityRepository
     {
         return null !== $this->findOneBy(['email' => $email]);
     }
+
+    public function save(Subscriber $subscriber): void
+    {
+        $this->_em->persist($subscriber);
+    }
+
+    public function commit(): void
+    {
+        $this->_em->flush();
+    }
+
+    public function saveAndCommit(Subscriber $subscriber): void
+    {
+        $this->save($subscriber);
+        $this->commit();
+    }
 }

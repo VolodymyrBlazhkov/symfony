@@ -4,14 +4,11 @@ namespace App\Service;
 
 use App\Modal\Author\PublishBookRequest;
 use App\Repository\BookRepository;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Security\Core\Security;
 
 class BookPublishService
 {
     public function __construct(
-        private BookRepository $bookRepository,
-        private EntityManagerInterface $em
+        private BookRepository $bookRepository
     ) {
     }
 
@@ -29,7 +26,6 @@ class BookPublishService
     {
         $book = $this->bookRepository->getBookById($id);
         $book->setPublicationDate($dateTime);
-
-        $this->em->flush();
+        $this->bookRepository->commit();
     }
 }

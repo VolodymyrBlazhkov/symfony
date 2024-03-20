@@ -10,13 +10,14 @@ use App\Modal\BookCategoryListResponse;
 use App\Modal\BookCategoryUpdateRequest;
 use App\Modal\IdResponse;
 use App\Repository\CategoryRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 class BookCategoryService
 {
-    public function __construct(private CategoryRepository $categoryRepository, private EntityManagerInterface $em,  private SluggerInterface $slugger,)
-    {
+    public function __construct(
+        private CategoryRepository $categoryRepository,
+        private SluggerInterface $slugger
+    ) {
     }
 
     public function deleteCategory(int $id): void
@@ -27,9 +28,7 @@ class BookCategoryService
         if ($books > 0) {
             throw new BookCategoryNotEmpty($books);
         }
-
-        $this->em->remove($category);
-        $this->em->flush();
+        $this->categoryRepository->removeAndCommit($category);
     }
 
     public function createCategory(BookCategoryUpdateRequest $bookCategoryUpdateRequest): IdResponse
@@ -68,8 +67,6 @@ class BookCategoryService
         }
 
         $category->setTitle($bookCategoryUpdateRequest->getTitle())->setSlug($slug);
-
-        $this->em->persist($category);
-        $this->em->flush();
+        $this->categoryRepository->saveAndCommit($category);
     }
 }
