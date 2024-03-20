@@ -81,7 +81,7 @@ class AuthorService
             ->setDescription($book->getDescription())
             ->setFormats(BookMapper::mapFormats($book))
             ->setCategories(BookMapper::mapCategories($book));
-
+        $book->setMeap(false);
         return BookMapper::mapDetails($book, $bookDetail);
     }
 

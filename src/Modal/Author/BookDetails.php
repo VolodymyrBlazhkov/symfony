@@ -152,4 +152,19 @@ class BookDetails
 
         return $this;
     }
+
+
+    private bool $meap = false;
+
+    public function isMeap(): bool
+    {
+        return $this->meap;
+    }
+
+    public function setMeap(bool $meap): self
+    {
+        $this->meap = $meap;
+
+        return $this;
+    }
 }
