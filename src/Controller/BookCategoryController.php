@@ -19,6 +19,7 @@ class BookCategoryController extends AbstractController
     }
 
     /**
+     * @QA\Tag(name="Category")
      * @QA\Response(
      *     response="200",
      *     description="Returns book categories",

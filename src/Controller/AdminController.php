@@ -60,7 +60,7 @@ class AdminController extends AbstractController
      *      @Model(type=ErrorResponse::class)
      * )
      */
-    #[Route(path:'/api/v1/admin/bookCategory/{id}', methods: ['DELETE'])]
+    #[Route(path:'/api/v1/admin/deleteBookCategory/{id}', methods: ['DELETE'])]
     #[Security(name: 'Bearer')]
     public function deleteCategory(int $id): Response
     {
@@ -83,7 +83,7 @@ class AdminController extends AbstractController
      * )
      * @QA\RequestBody(@Model(type=BookCategoryUpdateRequest::class))
      */
-    #[Route(path:'/api/v1/admin/bookCategory', methods: ['POST'])]
+    #[Route(path:'/api/v1/admin/createBookCategory', methods: ['POST'])]
     #[Security(name: 'Bearer')]
     public function createCategory(#[RequestBody] BookCategoryUpdateRequest $request): Response
     {
@@ -104,7 +104,7 @@ class AdminController extends AbstractController
      * )
      * @QA\RequestBody(@Model(type=BookCategoryUpdateRequest::class))
      */
-    #[Route(path:'/api/v1/admin/updateCategory/{id}', methods: ['POST'])]
+    #[Route(path:'/api/v1/admin/updateBookCategory/{id}', methods: ['POST'])]
     #[Security(name: 'Bearer')]
     public function updateCategory(int $id, #[RequestBody] BookCategoryUpdateRequest $request): Response
     {

@@ -20,6 +20,7 @@ class BookController extends AbstractController
     }
 
     /**
+     * @QA\Tag(name="Book")
      * @QA\Response(
      *     response="200",
      *     description="Returns books by category",
@@ -39,6 +40,7 @@ class BookController extends AbstractController
 
 
     /**
+     * @QA\Tag(name="Book")
      * @QA\Response(
      *     response="200",
      *     description="Returns book detais",

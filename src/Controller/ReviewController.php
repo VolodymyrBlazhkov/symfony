@@ -21,6 +21,7 @@ class ReviewController extends AbstractController
     }
 
     /**
+     * @QA\Tag(name="Review")
      * @QA\Parameter(name="page", in="query", description="Page Number", @QA\Schema(type="integer"))
      * @QA\Response(
      *     response="200",

@@ -21,6 +21,7 @@ class SubscribeController extends AbstractController
     }
 
     /**
+     * @QA\Tag(name="Subscribe")
      * @QA\Response(
      *     response="200",
      *     description="Subscribe",

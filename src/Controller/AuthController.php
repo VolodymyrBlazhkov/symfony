@@ -21,6 +21,7 @@ class AuthController extends AbstractController
     }
 
     /**
+     * @QA\Tag(name="User")
      * @QA\Response(
      *     response="200",
      *     description="Create user",
