@@ -19,6 +19,8 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class CategoryRepository extends ServiceEntityRepository
 {
+    use RepositoryModifyTrait;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Category::class);
@@ -67,32 +69,5 @@ class CategoryRepository extends ServiceEntityRepository
     public function findByBookCategoriesIds(array $ids): array
     {
         return $this->findBy(['id' => $ids]);
-    }
-
-    public function save(Category $category): void
-    {
-        $this->_em->persist($category);
-    }
-
-    public function remove(Category $category): void
-    {
-        $this->_em->remove($category);
-    }
-
-    public function commit(): void
-    {
-        $this->_em->flush();
-    }
-
-    public function removeAndCommit(Category $category): void
-    {
-        $this->remove($category);
-        $this->commit();
-    }
-
-    public function saveAndCommit(Category $category): void
-    {
-        $this->save($category);
-        $this->commit();
     }
 }

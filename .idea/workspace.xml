@@ -5,25 +5,30 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4353edf9-549d-4eab-a63c-c85bf0058d33" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/config/packages/sensio_framework_extra.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Exception/BookCategoryNotEmpty.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Exception/CategoryExistWithSlugException.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Modal/BookCategoryUpdateRequest.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Security/Vouter/AuthorBookVouter.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Service/BookPublishService.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/migrations/Version20240321103115.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Entity/BookChapter.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Exception/BookChaperNotFoundException.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Exception/BookLevelMaxException.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Modal/Author/CreateBookChapterRequest.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Modal/Author/UpdateBookChapterRequest.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Modal/Author/UpdateBookChapterSortRequest.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Modal/BookChapter.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Modal/BookChapterTreeResponse.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Repository/BookChapterRepository.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Repository/RepositoryModifyTrait.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Service/AuthorBookChaperService.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Service/SorPosition.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Service/SortContext.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Validation/AtLeastOneRequired.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Validation/AtLeastOneRequiredValidator.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/b2abcf0c-a14d-4bc9-9dbf-4484f1bdc69a.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/b2abcf0c-a14d-4bc9-9dbf-4484f1bdc69a.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/phpspec.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/phpspec.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/bundles.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/bundles.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/services.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/services.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/AdminController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/AdminController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/AuthorController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/AuthorController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Repository/BookRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/BookRepository.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Repository/CategoryRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/CategoryRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Service/AuthorService.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/AuthorService.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Service/BookCategoryService.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/BookCategoryService.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/symfony.lock" beforeDir="false" afterPath="$PROJECT_DIR$/symfony.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Repository/SubscriberRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/SubscriberRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Repository/UserRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/UserRepository.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -435,7 +440,8 @@
       <workItem from="1710578002834" duration="94000" />
       <workItem from="1710586189641" duration="459000" />
       <workItem from="1710839853696" duration="10149000" />
-      <workItem from="1710920930068" duration="15749000" />
+      <workItem from="1710920930068" duration="23477000" />
+      <workItem from="1711007788212" duration="11369000" />
     </task>
     <task id="LOCAL-00001" summary=" new api">
       <option name="closed" value="true" />
@@ -453,7 +459,39 @@
       <option name="project" value="LOCAL" />
       <updated>1710930055228</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Update category">
+      <option name="closed" value="true" />
+      <created>1710936702238</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1710936702238</updated>
+    </task>
+    <task id="LOCAL-00004" summary="doc type">
+      <option name="closed" value="true" />
+      <created>1710941079855</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1710941079855</updated>
+    </task>
+    <task id="LOCAL-00005" summary="ref">
+      <option name="closed" value="true" />
+      <created>1710942404294</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1710942404294</updated>
+    </task>
+    <task id="LOCAL-00006" summary="new action">
+      <option name="closed" value="true" />
+      <created>1710946892088</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1710946892088</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -462,7 +500,11 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value=" new api" />
     <MESSAGE value="Upload Image and publish date" />
-    <option name="LAST_COMMIT_MESSAGE" value="Upload Image and publish date" />
+    <MESSAGE value="Update category" />
+    <MESSAGE value="doc type" />
+    <MESSAGE value="ref" />
+    <MESSAGE value="new action" />
+    <option name="LAST_COMMIT_MESSAGE" value="new action" />
   </component>
   <component name="WordPressConfiguration">
     <wordpressPath />
@@ -507,7 +549,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/src/Service/AuthorService.php</url>
-          <line>55</line>
+          <line>62</line>
           <option name="timeStamp" value="12" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
@@ -527,12 +569,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/src/Controller/AuthorController.php</url>
-          <line>48</line>
+          <line>57</line>
           <option name="timeStamp" value="19" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/src/Controller/AuthorController.php</url>
-          <line>90</line>
+          <line>99</line>
           <option name="timeStamp" value="20" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
@@ -542,17 +584,17 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/src/Controller/AuthorController.php</url>
-          <line>168</line>
+          <line>177</line>
           <option name="timeStamp" value="23" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/src/Service/AuthorService.php</url>
-          <line>29</line>
+          <line>37</line>
           <option name="timeStamp" value="24" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/src/Service/AuthorService.php</url>
-          <line>31</line>
+          <line>39</line>
           <option name="timeStamp" value="25" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
@@ -562,7 +604,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/src/Controller/AuthorController.php</url>
-          <line>127</line>
+          <line>136</line>
           <option name="timeStamp" value="27" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
@@ -579,6 +621,46 @@
           <url>file://$PROJECT_DIR$/src/Controller/AdminController.php</url>
           <line>89</line>
           <option name="timeStamp" value="30" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/src/Controller/AuthorController.php</url>
+          <line>221</line>
+          <option name="timeStamp" value="31" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/src/Service/AuthorService.php</url>
+          <line>76</line>
+          <option name="timeStamp" value="32" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/src/Controller/AuthController.php</url>
+          <line>47</line>
+          <option name="timeStamp" value="33" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/src/Repository/RepositoryModifyTrait.php</url>
+          <line>11</line>
+          <option name="timeStamp" value="34" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/src/Controller/AuthorController.php</url>
+          <line>243</line>
+          <option name="timeStamp" value="35" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/src/Controller/AuthorController.php</url>
+          <line>264</line>
+          <option name="timeStamp" value="36" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/src/Validation/AtLeastOneRequiredValidator.php</url>
+          <line>21</line>
+          <option name="timeStamp" value="37" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/src/Validation/AtLeastOneRequired.php</url>
+          <line>31</line>
+          <option name="timeStamp" value="38" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

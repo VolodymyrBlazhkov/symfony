@@ -17,6 +17,7 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class UserRepository extends ServiceEntityRepository
 {
+    use RepositoryModifyTrait;
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, User::class);
@@ -40,21 +41,5 @@ class UserRepository extends ServiceEntityRepository
         }
 
         return $user;
-    }
-
-    public function save(User $user): void
-    {
-        $this->_em->persist($user);
-    }
-
-    public function commit(): void
-    {
-        $this->_em->flush();
-    }
-
-    public function saveAndCommit(User $user): void
-    {
-        $this->save($user);
-        $this->commit();
     }
 }

@@ -5,9 +5,15 @@ namespace App\Controller;
 
 use App\Attribute\RequestBody;
 use App\Attribute\RequestFile;
+use App\Modal\Author\CreateBookChapterRequest;
 use App\Modal\Author\CreateBookRequest;
 use App\Modal\Author\PublishBookRequest;
+use App\Modal\Author\UpdateBookChapterRequest;
+use App\Modal\Author\UpdateBookChapterSortRequest;
 use App\Modal\Author\UpdateBookRequest;
+use App\Modal\BookChapterTreeResponse;
+use App\Modal\IdResponse;
+use App\Service\AuthorBookChaperService;
 use App\Service\AuthorService;
 use App\Service\BookPublishService;
 use Nelmio\ApiDocBundle\Annotation\Model;
@@ -32,7 +38,8 @@ class AuthorController extends AbstractController
 {
     public function __construct(
         private AuthorService $authorService,
-        private BookPublishService $bookPublish
+        private BookPublishService $bookPublish,
+        private AuthorBookChaperService $authorBookChaperService
     ) {
     }
 
@@ -213,5 +220,113 @@ class AuthorController extends AbstractController
     public function book(int $id): Response
     {
         return $this->json( $this->authorService->getBook($id));
+    }
+
+    /**
+     * @QA\Tag(name="Author Api")
+     * @QA\Response(
+     *     response="200",
+     *     description="create Book Chapter",
+     *     @Model(type=IdResponse::class)
+     * )
+     * @QA\Response(
+     *      response="404",
+     *      description="books not found",
+     *      @Model(type=ErrorResponse::class)
+     *  )
+     * @QA\RequestBody(@Model(type=CreateBookChapterRequest::class))
+     */
+    #[Route(path:'/api/v1/author/book/{id}/chapter', methods: ['POST'])]
+    #[Security(name: 'Bearer')]
+    #[IsGranted(AuthorBookVouter::BOOK_PUBLISH, subject: 'id')]
+    public function createBookChapter(#[RequestBody] CreateBookChapterRequest $request, int $id): Response
+    {
+        return $this->json($this->authorBookChaperService->createChapter($request, $id));
+    }
+
+    /**
+     * @QA\Tag(name="Author Api")
+     * @QA\Response(
+     *     response="200",
+     *     description="Sort Book Chapter",
+     * )
+     * @QA\Response(
+     *      response="404",
+     *      description="books not found",
+     *      @Model(type=ErrorResponse::class)
+     *  )
+     * @QA\RequestBody(@Model(type=UpdateBookChapterSortRequest::class))
+     */
+    #[Route(path:'/api/v1/author/book/{id}/chapterSort', methods: ['POST'])]
+    #[Security(name: 'Bearer')]
+    #[IsGranted(AuthorBookVouter::BOOK_PUBLISH, subject: 'id')]
+    public function updateBookChapterSort(#[RequestBody] UpdateBookChapterSortRequest $request, int $id): Response
+    {
+        $this->authorBookChaperService->updateChapterSort($request);
+        return $this->json(null);
+    }
+
+    /**
+     * @QA\Tag(name="Author Api")
+     * @QA\Response(
+     *     response="200",
+     *     description="Update Chapter",
+     * )
+     * @QA\Response(
+     *      response="404",
+     *      description="books not found",
+     *      @Model(type=ErrorResponse::class)
+     *  )
+     * @QA\RequestBody(@Model(type=UpdateBookChapterRequest::class))
+     */
+    #[Route(path:'/api/v1/author/book/{id}/updateChapter', methods: ['POST'])]
+    #[Security(name: 'Bearer')]
+    #[IsGranted(AuthorBookVouter::BOOK_PUBLISH, subject: 'id')]
+    public function updateBookChapter(#[RequestBody] UpdateBookChapterRequest $request, int $id): Response
+    {
+        $this->authorBookChaperService->updateChapter($request);
+        return $this->json(null);
+    }
+
+    /**
+     * @QA\Tag(name="Author Api")
+     * @QA\Response(
+     *     response="200",
+     *     description="Get TreeChapter",
+     *     @Model(type=BookChapterTreeResponse::class)
+     * )
+     * @QA\Response(
+     *      response="404",
+     *      description="books not found",
+     *      @Model(type=ErrorResponse::class)
+     *  )
+     */
+    #[Route(path:'/api/v1/author/book/{id}/chapters', methods: ['GET'])]
+    #[Security(name: 'Bearer')]
+    #[IsGranted(AuthorBookVouter::BOOK_PUBLISH, subject: 'id')]
+    public function chapters(int $id): Response
+    {
+        return $this->json($this->authorBookChaperService->getChaptersTree($id));
+    }
+
+    /**
+     * @QA\Tag(name="Author Api")
+     * @QA\Response(
+     *     response="200",
+     *     description="Delete Chapter",
+     * )
+     * @QA\Response(
+     *      response="404",
+     *      description="books not found",
+     *      @Model(type=ErrorResponse::class)
+     *  )
+     */
+    #[Route(path:'/api/v1/author/book/{bookId}/deleteChapter/{id}', methods: ['DELETE'])]
+    #[Security(name: 'Bearer')]
+    #[IsGranted(AuthorBookVouter::BOOK_PUBLISH, subject: 'bookId')]
+    public function deleteChapter(int $id, int $bookId): Response
+    {
+        $this->authorBookChaperService->deleteChapter($id);
+        return $this->json(null);
     }
 }
