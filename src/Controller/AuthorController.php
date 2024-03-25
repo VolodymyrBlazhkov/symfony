@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-
 use App\Attribute\RequestBody;
 use App\Attribute\RequestFile;
 use App\Modal\Author\CreateBookChapterContentRequest;
@@ -20,7 +19,7 @@ use App\Service\AuthorService;
 use App\Service\BookContentService;
 use App\Service\BookPublishService;
 use Nelmio\ApiDocBundle\Annotation\Model;
-use OpenApi\Annotations as OA;
+use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Attributes\MediaType;
 use OpenApi\Attributes\Parameter;
 use OpenApi\Attributes\Property;
