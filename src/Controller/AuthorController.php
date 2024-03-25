@@ -21,7 +21,13 @@ use App\Service\BookContentService;
 use App\Service\BookPublishService;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Annotations as OA;
-use OpenApi\Annotations as QA;
+use OpenApi\Attributes\MediaType;
+use OpenApi\Attributes\Parameter;
+use OpenApi\Attributes\Property;
+use OpenApi\Attributes\RequestBody as QARequestBody;
+use OpenApi\Attributes\Response as QAResponse;
+use OpenApi\Attributes\Schema;
+use OpenApi\Attributes\Tag;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -48,14 +54,8 @@ class AuthorController extends AbstractController
     ) {
     }
 
-    /**
-     * @QA\Tag(name="Author Api")
-     * @QA\Response(
-     *     response="200",
-     *     description="Returns books",
-     *     @Model(type=BookListResponse::class)
-     * )
-     */
+    #[Tag('Author Api')]
+    #[QAResponse(response: 200, description: "Delete book", attachables: [new Model(type: BookListResponse::class)])]
     #[Route(path:'/api/v1/author/books', methods: ['GET'])]
     #[Security(name: 'Bearer')]
     public function books(#[CurrentUser] UserInterface $user): Response
@@ -63,19 +63,9 @@ class AuthorController extends AbstractController
         return $this->json($this->authorService->getBooks($user));
     }
 
-    /**
-     * @QA\Tag(name="Author Api")
-     * @QA\Response(
-     *     response="200",
-     *     description="DElete book"
-     * )
-     * @QA\Response(
-     *      response="404",
-     *      description="books not found",
-     *      @Model(type=ErrorResponse::class)
-     *  )
-     *
-     */
+    #[Tag('Author Api')]
+    #[QAResponse(response: 200, description: "Delete book")]
+    #[QAResponse(response: 404, description: "books not found", attachables: [new Model(type: ErrorResponse::class)])]
     #[Route(path:'/api/v1/author/book/{id}', methods: ['DELETE'])]
     #[Security(name: 'Bearer')]
     #[IsGranted(AuthorBookVouter::BOOK_PUBLISH, subject: 'id')]
@@ -85,19 +75,10 @@ class AuthorController extends AbstractController
         return $this->json(null);
     }
 
-    /**
-     * @QA\Tag(name="Author Api")
-     * @QA\Response(
-     *     response="200",
-     *     description="Create book"
-     * )
-     * @QA\Response(
-     *      response="404",
-     *      description="books exist with slug",
-     *      @Model(type=ErrorResponse::class)
-     *  )
-     * @QA\RequestBody(@Model(type=CreateBookRequest::class))
-     */
+    #[Tag('Author Api')]
+    #[QAResponse(response: 200, description: "Create book")]
+    #[QAResponse(response: 404, description: "books exist with slug", attachables: [new Model(type: ErrorResponse::class)])]
+    #[QARequestBody(attachables: [new Model(type: CreateBookRequest::class)])]
     #[Route(path:'/api/v1/author/book', methods: ['POST'])]
     #[Security(name: 'Bearer')]
     public function createBook(#[RequestBody] CreateBookRequest $request, #[CurrentUser] UserInterface $user): Response
@@ -105,19 +86,10 @@ class AuthorController extends AbstractController
         return $this->json($this->authorService->createBook($request, $user));
     }
 
-    /**
-     * @QA\Tag(name="Author Api")
-     * @QA\Response(
-     *     response="200",
-     *     description="Publish book"
-     * )
-     * @QA\Response(
-     *      response="404",
-     *      description="books exist with slug",
-     *      @Model(type=ErrorResponse::class)
-     *  )
-     * @QA\RequestBody(@Model(type=PublishBookRequest::class))
-     */
+    #[Tag('Author Api')]
+    #[QAResponse(response: 200, description: "Publish book")]
+    #[QAResponse(response: 404, description: "books exist with slug", attachables: [new Model(type: ErrorResponse::class)])]
+    #[QARequestBody(attachables: [new Model(type: PublishBookRequest::class)])]
     #[Route(path:'/api/v1/author/book/{id}/publish', methods: ['POST'])]
     #[Security(name: 'Bearer')]
     #[IsGranted(AuthorBookVouter::BOOK_PUBLISH, subject: 'id')]
@@ -127,13 +99,8 @@ class AuthorController extends AbstractController
         return $this->json(null);
     }
 
-    /**
-     * @QA\Tag(name="Author Api")
-     * @QA\Response(
-     *     response="200",
-     *     description="Un Publish book"
-     * )
-     */
+    #[Tag('Author Api')]
+    #[QAResponse(response: 200, description: "Un Publish book")]
     #[Route(path:'/api/v1/author/book/{id}/unpublish', methods: ['POST'])]
     #[Security(name: 'Bearer')]
     #[IsGranted(AuthorBookVouter::BOOK_PUBLISH, subject: 'id')]
@@ -143,32 +110,22 @@ class AuthorController extends AbstractController
         return $this->json(null);
     }
 
-    /**
-     * @QA\Tag(name="Author Api")
-     * @QA\Response(
-     *     response="200",
-     *     description="Upload book image",
-     *     @Model(type=UploadImageResponse::class)
-     * )
-     * @QA\Response(
-     *      response="404",
-     *      description="Validation faild",
-     *      @Model(type=ErrorResponse::class)
-     *  )
-     * @OA\RequestBody(
-     *     @OA\MediaType(
-     *          mediaType="multipart/form-data",
-     *          @OA\Schema(
-     *              @OA\Property(
-     *                  description="file to upload",
-     *                  property="cover",
-     *                  type="string",
-     *                  format="binary",
-     *              )
-     *          )
-     *     )
-     * )
-     */
+    #[Tag('Author Api')]
+    #[QAResponse(response: 200, description: "Upload book image", attachables: [new Model(type: UploadImageResponse::class)])]
+    #[QAResponse(response: 404, description: "Validation faild", attachables: [new Model(type: ErrorResponse::class)])]
+    #[QARequestBody(content: [
+        new MediaType(
+            mediaType: 'multipart/form-data',
+            schema: new Schema(
+                properties: [new Property(
+                    property: 'cover',
+                    description: 'file to upload',
+                    type: 'string',
+                    format: 'binary'
+                )]
+            )
+        )
+    ])]
     #[Route(path:'/api/v1/author/book/{id}/uploadImage', methods: ['POST'])]
     #[Security(name: 'Bearer')]
     #[IsGranted(AuthorBookVouter::BOOK_PUBLISH, subject: 'id')]
@@ -182,20 +139,10 @@ class AuthorController extends AbstractController
         return $this->json($this->authorService->uploadImage($id, $file));
     }
 
-
-    /**
-     * @QA\Tag(name="Author Api")
-     * @QA\Response(
-     *     response="200",
-     *     description="Update book"
-     * )
-     * @QA\Response(
-     *      response="404",
-     *      description="books not found",
-     *      @Model(type=ErrorResponse::class)
-     *  )
-     * @QA\RequestBody(@Model(type=UpdateBookRequest::class))
-     */
+    #[Tag('Author Api')]
+    #[QAResponse(response: 200, description: "Update book")]
+    #[QAResponse(response: 404, description: "books not found", attachables: [new Model(type: ErrorResponse::class)])]
+    #[QARequestBody(attachables: [new Model(type: UpdateBookRequest::class)])]
     #[Route(path:'/api/v1/author/updateBook/{id}', methods: ['POST'])]
     #[Security(name: 'Bearer')]
     #[IsGranted(AuthorBookVouter::BOOK_PUBLISH, subject: 'id')]
@@ -205,19 +152,9 @@ class AuthorController extends AbstractController
         return $this->json(null);
     }
 
-    /**
-     * @QA\Tag(name="Author Api")
-     * @QA\Response(
-     *     response="200",
-     *     description="Get book",
-     *     @Model(type=BookDetails::class)
-     * )
-     * @QA\Response(
-     *      response="404",
-     *      description="books not found",
-     *      @Model(type=ErrorResponse::class)
-     *  )
-     */
+    #[Tag('Author Api')]
+    #[QAResponse(response: 200, description: "Get book", attachables: [new Model(type: BookDetails::class)])]
+    #[QAResponse(response: 404, description: "books not found", attachables: [new Model(type: ErrorResponse::class)])]
     #[Route(path:'/api/v1/author/book/{id}', methods: ['GET'])]
     #[Security(name: 'Bearer')]
     #[IsGranted(AuthorBookVouter::BOOK_PUBLISH, subject: 'id')]
@@ -226,20 +163,10 @@ class AuthorController extends AbstractController
         return $this->json( $this->authorService->getBook($id));
     }
 
-    /**
-     * @QA\Tag(name="Author Api")
-     * @QA\Response(
-     *     response="200",
-     *     description="create Book Chapter",
-     *     @Model(type=IdResponse::class)
-     * )
-     * @QA\Response(
-     *      response="404",
-     *      description="books not found",
-     *      @Model(type=ErrorResponse::class)
-     *  )
-     * @QA\RequestBody(@Model(type=CreateBookChapterRequest::class))
-     */
+    #[Tag('Author Api')]
+    #[QAResponse(response: 200, description: "create Book Chapter", attachables: [new Model(type: IdResponse::class)])]
+    #[QAResponse(response: 404, description: "books not found", attachables: [new Model(type: ErrorResponse::class)])]
+    #[QARequestBody(attachables: [new Model(type: CreateBookChapterRequest::class)])]
     #[Route(path:'/api/v1/author/book/{id}/chapter', methods: ['POST'])]
     #[Security(name: 'Bearer')]
     #[IsGranted(AuthorBookVouter::BOOK_PUBLISH, subject: 'id')]
@@ -248,19 +175,10 @@ class AuthorController extends AbstractController
         return $this->json($this->authorBookChaperService->createChapter($request, $id));
     }
 
-    /**
-     * @QA\Tag(name="Author Api")
-     * @QA\Response(
-     *     response="200",
-     *     description="Sort Book Chapter",
-     * )
-     * @QA\Response(
-     *      response="404",
-     *      description="books not found",
-     *      @Model(type=ErrorResponse::class)
-     *  )
-     * @QA\RequestBody(@Model(type=UpdateBookChapterSortRequest::class))
-     */
+    #[Tag('Author Api')]
+    #[QAResponse(response: 200, description: "Sort Book Chapter")]
+    #[QAResponse(response: 404, description: "books not found", attachables: [new Model(type: ErrorResponse::class)])]
+    #[QARequestBody(attachables: [new Model(type: UpdateBookChapterSortRequest::class)])]
     #[Route(path:'/api/v1/author/book/{id}/chapterSort', methods: ['POST'])]
     #[Security(name: 'Bearer')]
     #[IsGranted(AuthorBookVouter::BOOK_PUBLISH, subject: 'id')]
@@ -270,19 +188,10 @@ class AuthorController extends AbstractController
         return $this->json(null);
     }
 
-    /**
-     * @QA\Tag(name="Author Api")
-     * @QA\Response(
-     *     response="200",
-     *     description="Update Chapter",
-     * )
-     * @QA\Response(
-     *      response="404",
-     *      description="books not found",
-     *      @Model(type=ErrorResponse::class)
-     *  )
-     * @QA\RequestBody(@Model(type=UpdateBookChapterRequest::class))
-     */
+    #[Tag('Author Api')]
+    #[QAResponse(response: 200, description: "Update Chapter")]
+    #[QAResponse(response: 404, description: "books not found", attachables: [new Model(type: ErrorResponse::class)])]
+    #[QARequestBody(attachables: [new Model(type: UpdateBookChapterRequest::class)])]
     #[Route(path:'/api/v1/author/book/{id}/updateChapter', methods: ['POST'])]
     #[Security(name: 'Bearer')]
     #[IsGranted(AuthorBookVouter::BOOK_PUBLISH, subject: 'id')]
@@ -292,19 +201,9 @@ class AuthorController extends AbstractController
         return $this->json(null);
     }
 
-    /**
-     * @QA\Tag(name="Author Api")
-     * @QA\Response(
-     *     response="200",
-     *     description="Get TreeChapter",
-     *     @Model(type=BookChapterTreeResponse::class)
-     * )
-     * @QA\Response(
-     *      response="404",
-     *      description="books not found",
-     *      @Model(type=ErrorResponse::class)
-     *  )
-     */
+    #[Tag('Author Api')]
+    #[QAResponse(response: 200, description: "Get TreeChapter", attachables: [new Model(type: BookChapterTreeResponse::class)])]
+    #[QAResponse(response: 404, description: "books not found", attachables: [new Model(type: ErrorResponse::class)])]
     #[Route(path:'/api/v1/author/book/{id}/chapters', methods: ['GET'])]
     #[Security(name: 'Bearer')]
     #[IsGranted(AuthorBookVouter::BOOK_PUBLISH, subject: 'id')]
@@ -313,18 +212,9 @@ class AuthorController extends AbstractController
         return $this->json($this->authorBookChaperService->getChaptersTree($id));
     }
 
-    /**
-     * @QA\Tag(name="Author Api")
-     * @QA\Response(
-     *     response="200",
-     *     description="Delete Chapter",
-     * )
-     * @QA\Response(
-     *      response="404",
-     *      description="books not found",
-     *      @Model(type=ErrorResponse::class)
-     *  )
-     */
+    #[Tag('Author Api')]
+    #[QAResponse(response: 200, description: "Delete Chapter")]
+    #[QAResponse(response: 404, description: "books not found", attachables: [new Model(type: ErrorResponse::class)])]
     #[Route(path:'/api/v1/author/book/{bookId}/deleteChapter/{id}', methods: ['DELETE'])]
     #[Security(name: 'Bearer')]
     #[IsGranted(AuthorBookVouter::BOOK_PUBLISH, subject: 'bookId')]
@@ -334,20 +224,10 @@ class AuthorController extends AbstractController
         return $this->json(null);
     }
 
-    /**
-     * @QA\Tag(name="Author Api")
-     * @QA\Response(
-     *     response="200",
-     *     description="create Book Chapter content",
-     *     @Model(type=IdResponse::class)
-     * )
-     * @QA\Response(
-     *      response="404",
-     *      description="books content not found",
-     *      @Model(type=ErrorResponse::class)
-     *  )
-     * @QA\RequestBody(@Model(type=CreateBookChapterContentRequest::class))
-     */
+    #[Tag('Author Api')]
+    #[QAResponse(response: 200, description: "create Book Chapter content", attachables: [new Model(type: IdResponse::class)])]
+    #[QAResponse(response: 404, description: "books content not found", attachables: [new Model(type: ErrorResponse::class)])]
+    #[QARequestBody(attachables: [new Model(type: CreateBookChapterContentRequest::class)])]
     #[Route(path:'/api/v1/author/book/{bookId}/createChapterContent/{chapterId}/content', methods: ['POST'])]
     #[Security(name: 'Bearer')]
     #[IsGranted(AuthorBookVouter::BOOK_PUBLISH, subject: 'bookId')]
@@ -356,18 +236,9 @@ class AuthorController extends AbstractController
         return $this->json($this->bookContentService->createContent($request, $chapterId));
     }
 
-    /**
-     * @QA\Tag(name="Author Api")
-     * @QA\Response(
-     *     response="200",
-     *     description="Delete Chapter content",
-     * )
-     * @QA\Response(
-     *      response="404",
-     *      description="books not found",
-     *      @Model(type=ErrorResponse::class)
-     *  )
-     */
+    #[Tag('Author Api')]
+    #[QAResponse(response: 200, description: "Delete Chapter content")]
+    #[QAResponse(response: 404, description: "books not found", attachables: [new Model(type: ErrorResponse::class)])]
     #[Route(path:'/api/v1/author/book/{bookId}/deleteChapterContent/{chapterId}/content/{id}', methods: ['DELETE'])]
     #[Security(name: 'Bearer')]
     #[IsGranted(AuthorBookVouter::BOOK_PUBLISH, subject: 'bookId')]
@@ -377,19 +248,10 @@ class AuthorController extends AbstractController
         return $this->json(null);
     }
 
-    /**
-     * @QA\Tag(name="Author Api")
-     * @QA\Response(
-     *     response="200",
-     *     description="Update Chapter content ",
-     * )
-     * @QA\Response(
-     *      response="404",
-     *      description="books not found",
-     *      @Model(type=ErrorResponse::class)
-     *  )
-     * @QA\RequestBody(@Model(type=CreateBookChapterContentRequest::class))
-     */
+    #[Tag('Author Api')]
+    #[QAResponse(response: 200, description: "Update Chapter content")]
+    #[QAResponse(response: 404, description: "books not found", attachables: [new Model(type: ErrorResponse::class)])]
+    #[QARequestBody(attachables: [new Model(type: CreateBookChapterContentRequest::class)])]
     #[Route(path:'/api/v1/author/book/{bookId}/updateChapterContent/{chapterId}/content/{id}', methods: ['POST'])]
     #[Security(name: 'Bearer')]
     #[IsGranted(AuthorBookVouter::BOOK_PUBLISH, subject: 'bookId')]
@@ -399,20 +261,10 @@ class AuthorController extends AbstractController
         return $this->json(null);
     }
 
-    /**
-     * @QA\Tag(name="Author Api")
-     * @QA\Parameter(name="page", in="query", description="Page Number", @QA\Schema(type="integer"))
-     * @QA\Response(
-     *     response="200",
-     *     description="Get Chapter content ",
-     *     @Model(type=BookChapterContentPage::class)
-     * )
-     * @QA\Response(
-     *      response="404",
-     *      description="books not found",
-     *      @Model(type=ErrorResponse::class)
-     *  )
-     */
+    #[Tag('Author Api')]
+    #[Parameter(name: 'page', description: 'Page Number', in: 'query', schema: new Schema(type: 'integer'))]
+    #[QAResponse(response: 200, description: "Get Chapter content", attachables: [new Model(type: BookChapterContentPage::class)])]
+    #[QAResponse(response: 404, description: "books not found", attachables: [new Model(type: ErrorResponse::class)])]
     #[Route(path:'/api/v1/author/book/{bookId}/chapters/{chapterId}/content', methods: ['GET'])]
     #[Security(name: 'Bearer')]
     #[IsGranted(AuthorBookVouter::BOOK_PUBLISH, subject: 'bookId')]
